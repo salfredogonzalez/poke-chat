@@ -12,10 +12,12 @@ $(function () {
     }
   });
 
-  socket.on('new message', function (msg) {
-    if (msg) {
-      var message = `<li><div class="msg"><p>${msg}</p></div></li>`;
-      $('ul.chat').append($('<li>').html(message));
+  socket.on('new message', function (data) {
+    console.log(data);
+    if (data) {
+      if (data['from'] == 'server') { var className = 'other'} else { var className = 'self';}
+      var message = `<li class="${className}"><div class="msg"><p>${data['mensaje']}</p></div></li>`;
+      $('ul.chat').append(message);
       $('html,body').animate({scrollTop: $(document).height()})
     }
   });

@@ -21,12 +21,12 @@ io.on('connect', function (socket) {
     if (msg) {
       let id = socket.id;
       let question = encodeURI(msg);
-      io.sockets.emit('new message', msg);
+      io.sockets.emit('new message', {mensaje: msg, from: 'me'});
 
       axios.get(`http://beta.soldai.com/bill-cipher/askquestion?question=${question}&session_id=${id}&key=${process.env.SOLDAI_KEY}`)
       .then(response => {
         console.log(response.data.current_response.message);
-        io.sockets.emit('new message', response.data.current_response.message);
+        io.sockets.emit('new message', {mensaje: response.data.current_response.message, from: 'server'});
       })
       .catch(error => {
         console.log(error);
